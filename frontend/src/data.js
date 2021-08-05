@@ -17,7 +17,7 @@ const data = {
       name: 'Product 02',
       category: 'Category01',
       image: '/images/p1.jpg',
-      price: 150,
+      price: 150.25,
       countInStock: 8,
       brand: 'brand01',
       rating: 4.5,

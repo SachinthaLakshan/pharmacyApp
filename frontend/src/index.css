@@ -117,6 +117,9 @@ a.brand {
 .col-2 {
   flex: 2 1 50rem;
 }
+.min-30 {
+  min-width: 30rem;
+}
 .badge {
   background-color: #f02020;
   color: #ffffff;
@@ -134,6 +137,10 @@ img.medium {
   width: 100%;
 }
 img.large {
+  width: 100%;
+}
+img.small {
+  max-width: 5rem;
   width: 100%;
 }
 /* Card */

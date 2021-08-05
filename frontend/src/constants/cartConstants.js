@@ -1,1 +1,2 @@
 export const CART_ADD_ITEM = 'PRODUCT_LIST_FAIL';
+export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
