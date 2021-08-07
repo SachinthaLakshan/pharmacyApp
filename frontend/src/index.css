@@ -169,6 +169,9 @@ img.small {
   color: #404040;
 }
 /* Alert */
+.loading {
+  display: block !important;
+}
 .success {
   color: #20a020;
 }
@@ -189,6 +192,7 @@ img.small {
   color: #a02020;
   background-color: #ffe0e0e0;
 }
+
 /* Form */
 .form {
   max-width: 60rem;

@@ -5,6 +5,7 @@ import ProductScreen from './screens/ProductScreen';
 import { useSelector, useDispatch } from 'react-redux';
 import SigninScreen from './screens/SigninScreen';
 import { signout } from './actions/userActions';
+import RegisterScreen from './screens/RegisterScreen';
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -35,7 +36,7 @@ function App() {
             {userInfo ? (
               <div className="dropdown">
                 <Link to="#">
-                  {userInfo.name}
+                  {`${userInfo.name}  `}
                   <i className="fa fa-caret-down"></i>{' '}
                 </Link>
                 <ul className="dropdown-content">
@@ -53,6 +54,7 @@ function App() {
           <Route path="/cart/:id?" component={CartScreen}></Route>
           <Route path="/products/:id" component={ProductScreen}></Route>
           <Route path="/signin" component={SigninScreen}></Route>
+          <Route path="/register" component={RegisterScreen}></Route>
           <Route path="/" component={HomeScreen} exact></Route>
         </main>
         <footer className="row center">All right reserved</footer>
