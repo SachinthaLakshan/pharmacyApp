@@ -13,7 +13,7 @@ orderRouter.post(
     } else {
       const order = new Order({
         orderItems: req.body.orderItems,
-        ShippingAddress: req.body.ShippingAddress,
+        shippingAddress: req.body.shippingAddress,
         paymentMethod: req.body.paymentMethod,
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
