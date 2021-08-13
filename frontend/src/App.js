@@ -30,18 +30,16 @@ function App() {
         <header className="row">
           <div>
             <Link className="brand" to="/">
-              Online Osu
+              <i class="fa fa-wheelchair-alt" aria-hidden="true"></i> Online Osu
             </Link>
           </div>
           <div>
             <Link to="/register">
-              Register
-              {cartItems.length > 0 && (
-                <span className="badge">{cartItems.length}</span>
-              )}
+              {' '}
+              <i class="fa fa-user-circle" aria-hidden="true"></i> Register
             </Link>
             <Link to="/cart">
-              Cart
+              <i class="fa fa-shopping-cart fa-1x" aria-hidden="true"></i> Cart
               {cartItems.length > 0 && (
                 <span className="badge">{cartItems.length}</span>
               )}
