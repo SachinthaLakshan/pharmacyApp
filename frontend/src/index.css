@@ -203,6 +203,10 @@ img.small {
   color: #a02020;
   background-color: #ffe0e0e0;
 }
+.alert-success {
+  color: #10a510;
+  background-color: #a4faa4;
+}
 
 /* Form */
 .form {

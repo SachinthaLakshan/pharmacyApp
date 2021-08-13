@@ -15,6 +15,7 @@ import {
   userDetailsReducer,
   userRegisterReducer,
   userSigninReducer,
+  userUpdateProfileReducer,
 } from './reducers/userReducers';
 
 const initialState = {
@@ -44,6 +45,7 @@ const reducer = combineReducers({
   orderPay: orderPayReducer,
   orderMineList: orderMineListReducer,
   userDetails: userDetailsReducer,
+  userUpdateProfile: userUpdateProfileReducer,
 });
 
 // const enhancers = compose(
