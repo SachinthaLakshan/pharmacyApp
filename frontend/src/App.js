@@ -13,6 +13,7 @@ import OrderScreen from './screens/OrderScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PrivateRoute from './components/PrivateRoute';
+import PrescriptionScreen from './screens/PrescriptionScreen';
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -34,6 +35,11 @@ function App() {
             </Link>
           </div>
           <div>
+            <Link to="/prescription">
+              {' '}
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Upload
+              Prescription
+            </Link>
             <Link to="/register">
               {' '}
               <i class="fa fa-user-circle" aria-hidden="true"></i> Register
@@ -98,6 +104,7 @@ function App() {
           <Route path="/shipping" component={ShippingAddressScreen}></Route>
           <Route path="/payment" component={PaymentMethodScreen}></Route>
           <Route path="/placeorder" component={PlaceOrderScreen}></Route>
+          <Route path="/prescription" component={PrescriptionScreen}></Route>
           <Route path="/order/:id" component={OrderScreen}></Route>
           <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
           <PrivateRoute
