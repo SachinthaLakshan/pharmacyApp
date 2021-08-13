@@ -82,6 +82,9 @@ button.primary {
 button.block {
   width: 100%;
 }
+button.small {
+  font-size: 1.2rem;
+}
 input:hover,
 select:hover,
 textarea:hover,
@@ -145,6 +148,14 @@ img.small {
 }
 /* Card */
 .card {
+  border: 0.1rem #c0c0c0 solid;
+  background-color: #f8f8f8;
+  border-radius: 0.5rem;
+  margin: 1rem;
+}
+.card-product {
+  max-width: 15rem;
+  width: 100%;
   border: 0.1rem #c0c0c0 solid;
   background-color: #f8f8f8;
   border-radius: 0.5rem;
@@ -238,4 +249,21 @@ img.small {
 .checkout-steps > div.active {
   border-top-color: #f08000;
   color: #f08000;
+}
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table tbody tr:nth-of-type(odd) {
+  background-color: #f4f4f4;
+}
+.table td,
+.table th {
+  text-align: left;
+  border: 0.1rem solid #e4e4e4;
+  padding: 0.5rem;
+}
+.table button {
+  margin: 0 0.2rem;
 }
