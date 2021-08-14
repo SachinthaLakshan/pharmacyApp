@@ -34,21 +34,23 @@ function App() {
         <header className="row">
           <div>
             <Link className="brand" to="/">
-              <i class="fa fa-wheelchair-alt" aria-hidden="true"></i> Online Osu
+              <i className="fa fa-wheelchair-alt" aria-hidden="true"></i> Online
+              Osu
             </Link>
           </div>
           <div>
             <Link to="/prescription">
               {' '}
-              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Upload
-              Prescription
+              <i className="fa fa-pencil-square-o" aria-hidden="true"></i>{' '}
+              Upload Prescription
             </Link>
             <Link to="/register">
               {' '}
-              <i class="fa fa-user-circle" aria-hidden="true"></i> Register
+              <i className="fa fa-user-circle" aria-hidden="true"></i> Register
             </Link>
             <Link to="/cart">
-              <i class="fa fa-shopping-cart fa-1x" aria-hidden="true"></i> Cart
+              <i className="fa fa-shopping-cart fa-1x" aria-hidden="true"></i>{' '}
+              Cart
               {cartItems.length > 0 && (
                 <span className="badge">{cartItems.length}</span>
               )}
