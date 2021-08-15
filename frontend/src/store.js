@@ -9,6 +9,7 @@ import {
   orderListReducer,
   orderMineListReducer,
   orderPayReducer,
+  orderSummaryReducer,
 } from './reducers/oderReducers';
 import {
   productListReducer,
@@ -68,6 +69,7 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   productCategoryList: productCategoryListReducer,
   productReviewCreate: productReviewCreateReducer,
+  orderSummary: orderSummaryReducer,
 });
 
 // const enhancers = compose(
