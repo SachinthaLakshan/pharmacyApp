@@ -373,3 +373,6 @@ button.close-sidebar {
 .cat-list a:hover {
   color: #fad60b;
 }
+.active {
+  font-weight: bold;
+}
