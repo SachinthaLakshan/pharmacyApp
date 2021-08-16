@@ -60,6 +60,75 @@ export default function DashboardScreen() {
               </div>
             </li>
           </ul>
+          <ul>
+            <li>
+              <div className="summary-title color1">
+                <span>
+                  <i className="fa fa-pencil-square-o" /> Uploaded Prescriptions
+                </span>
+              </div>
+              <div className="summary-body">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>NAME</th>
+                      <th>EMAIL</th>
+                      <th>IS SELLER</th>
+                      <th>IS ADMIN</th>
+                      <th>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr key={1}>
+                      <td>dsfds</td>
+                      <td>sdfds</td>
+                      <td>sdfds</td>
+                      <td>sdfds</td>
+                      <td>sdfds</td>
+                      <td>
+                        <button type="button" className="small">
+                          Edit
+                        </button>
+                        <button type="button" className="small" o>
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>NAME</th>
+                      <th>EMAIL</th>
+                      <th>IS SELLER</th>
+                      <th>IS ADMIN</th>
+                      <th>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr key={1}>
+                      <td>dsf</td>
+                      <td>dsfds</td>
+                      <td>dsfds</td>
+                      <td>sdfd</td>
+                      <td>fdsf</td>
+                      <td>
+                        <button type="button" className="small">
+                          Edit
+                        </button>
+                        <button type="button" className="small">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ul>
           <div>
             <div>
               <h2>Sales</h2>

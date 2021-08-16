@@ -78,11 +78,27 @@ function App() {
             ></Route>
           </div>
           <div>
-            <Link to="/prescription">
-              {' '}
-              <i className="fa fa-pencil-square-o" aria-hidden="true"></i>{' '}
-              Upload Prescription
-            </Link>
+            {userInfo && !userInfo.isAdmin && (
+              <Link to="/prescription">
+                {' '}
+                <i
+                  className="fa fa-pencil-square-o"
+                  aria-hidden="true"
+                ></i>{' '}
+                Upload Prescription
+              </Link>
+            )}
+            {userInfo && userInfo.isAdmin && (
+              <Link to="/dashboard">
+                {' '}
+                <i
+                  className="fa fa-pencil-square-o"
+                  aria-hidden="true"
+                ></i>{' '}
+                Prescriptions
+                <span className="badge">{2}</span>
+              </Link>
+            )}
             <Link to="/register">
               {' '}
               <i className="fa fa-user-circle" aria-hidden="true"></i> Register
@@ -266,7 +282,10 @@ function App() {
         </main>
         <footer className="row center">
           {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />}
-          <div>All right reserved</div>{' '}
+          <div>
+            <i class="fa fa-copyright" aria-hidden="true"></i> All rights
+            reserved
+          </div>
         </footer>
       </div>
     </BrowserRouter>

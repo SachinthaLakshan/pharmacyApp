@@ -506,3 +506,22 @@ button.close-sidebar {
 .support-users .unread {
   background-color: #f02020;
 }
+.prescription-image {
+  max-width: 50rem;
+  max-height: 50rem;
+  align-self: center;
+}
+.prescription-img-wrap {
+  margin-top: 3rem;
+  align-content: center;
+}
+.pre-header {
+  color: black;
+  background-color: #f4af1b;
+  text-align: center;
+  border-radius: 12rem;
+  font-size: x-large;
+}
+.pre-header i {
+  margin-left: 1rem;
+}
