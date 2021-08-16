@@ -9,6 +9,7 @@ import { PRESCRIPTION_CREATE_RESET } from '../constants/prescriptionConstants';
 export default function PrescriptionScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [isdeliver, setIsdeliver] = useState(false);
   const [isPickup, setIsPickup] = useState(false);
@@ -29,6 +30,7 @@ export default function PrescriptionScreen() {
       createPrescription({
         name,
         email,
+        address,
         contactNumber,
         isdeliver,
         isPickup,
@@ -109,6 +111,17 @@ export default function PrescriptionScreen() {
                   value={contactNumber}
                   onChange={(e) => setContactNumber(e.target.value)}
                 ></input>
+              </div>
+              <div>
+                <label htmlFor="address">Address</label>
+                <textarea
+                  id="address"
+                  rows="4"
+                  type="text"
+                  placeholder="Enter Your Delivery Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                ></textarea>
               </div>
               <div>
                 <label htmlFor="price">Email</label>

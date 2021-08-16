@@ -12,6 +12,7 @@ prescriptionRouter.post(
     const prescription = new Prescription({
       name: req.body.name,
       email: req.body.email,
+      address: req.body.address,
       contactNumber: req.body.contactNumber,
       isdeliver: req.body.isdeliver,
       isPickup: req.body.isPickup,
