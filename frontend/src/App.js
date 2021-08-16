@@ -29,6 +29,8 @@ import { listProductCategories } from './actions/productActions';
 import LoadingBox from './components/LodingBox';
 import MessageBox from './components/MessageBox';
 import DashboardScreen from './screens/DashboardScreen';
+import SupportScreen from './screens/SupportScreen';
+import ChatBox from './components/ChatBox';
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -148,6 +150,9 @@ function App() {
                   <li>
                     <Link to="/userlist">Users</Link>
                   </li>
+                  <li>
+                    <Link to="/support">Support</Link>
+                  </li>
                 </ul>
               </div>
             )}
@@ -248,6 +253,7 @@ function App() {
             path="/dashboard"
             component={DashboardScreen}
           ></AdminRoute>
+          <AdminRoute path="/support" component={SupportScreen}></AdminRoute>
           <SellerRoute
             path="/productlist/seller"
             component={ProductListScreen}
@@ -258,7 +264,10 @@ function App() {
           ></SellerRoute>
           <Route path="/" component={HomeScreen} exact></Route>
         </main>
-        <footer className="row center">All right reserved</footer>
+        <footer className="row center">
+          {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />}
+          <div>All right reserved</div>{' '}
+        </footer>
       </div>
     </BrowserRouter>
   );
