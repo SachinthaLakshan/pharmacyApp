@@ -31,9 +31,12 @@ import MessageBox from './components/MessageBox';
 import DashboardScreen from './screens/DashboardScreen';
 import SupportScreen from './screens/SupportScreen';
 import ChatBox from './components/ChatBox';
+import { listPrescriptions } from './actions/prescriptionAction';
 
 function App() {
   const cart = useSelector((state) => state.cart);
+  const prescriptionlist = useSelector((state) => state.prescriptionlist);
+  const { prescriptions, loading } = prescriptionlist;
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const { cartItems } = cart;
   const userSignin = useSelector((state) => state.userSignin);
@@ -42,13 +45,15 @@ function App() {
   const signoutHandler = () => {
     dispatch(signout());
   };
-
   const productCategoryList = useSelector((state) => state.productCategoryList);
   const {
     loading: loadingCategories,
     error: errorCategories,
     categories,
   } = productCategoryList;
+  useEffect(() => {
+    dispatch(listPrescriptions());
+  }, [dispatch]);
   useEffect(() => {
     dispatch(listProductCategories());
   }, [dispatch]);
@@ -96,7 +101,9 @@ function App() {
                   aria-hidden="true"
                 ></i>{' '}
                 Prescriptions
-                <span className="badge">{2}</span>
+                {!loading && prescriptions.length > 0 && (
+                  <span className="badge">{prescriptions.length}</span>
+                )}
               </Link>
             )}
             <Link to="/register">

@@ -1,30 +1,56 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Chart from 'react-google-charts';
 import { summaryOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LodingBox';
 import MessageBox from '../components/MessageBox';
+import { listPrescriptions } from '../actions/prescriptionAction';
+import Modal from 'react-awesome-modal';
 
 export default function DashboardScreen() {
   const orderSummary = useSelector((state) => state.orderSummary);
   const { loading, summary, error } = orderSummary;
-  console.log('lo', loading);
-  console.log('su', summary);
-  console.log('er', error);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalHeader, setModalHeader] = useState('not came');
+  const [modalImage, setModalImage] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const prescriptionlist = useSelector((state) => state.prescriptionlist);
+  const {
+    loading: loadingPrescriptions,
+    error: errorPrescriptions,
+    prescriptions,
+  } = prescriptionlist;
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(listPrescriptions());
+  }, [dispatch]);
+  useEffect(() => {
     dispatch(summaryOrder());
   }, [dispatch]);
+
+  const imageClickHandler = (name, image) => {
+    setModalVisible(true);
+    setModalHeader(name);
+    setModalImage(image);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
   return (
     <div>
       <div className="row">
         <h1>Dashboard</h1>
       </div>
-      {loading ? (
+      {loading || loadingPrescriptions ? (
         <LoadingBox />
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
+      ) : error || errorPrescriptions ? (
+        <MessageBox variant="danger">
+          {error}
+          {errorPrescriptions}
+        </MessageBox>
       ) : (
         <>
           <ul className="row summary">
@@ -53,7 +79,7 @@ export default function DashboardScreen() {
                 </span>
               </div>
               <div className="summary-body">
-                $
+                Rs.
                 {summary.orders[0]
                   ? summary.orders[0].totalSales.toFixed(2)
                   : 0}
@@ -67,63 +93,59 @@ export default function DashboardScreen() {
                   <i className="fa fa-pencil-square-o" /> Uploaded Prescriptions
                 </span>
               </div>
-              <div className="summary-body">
+              <div>
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>ID</th>
                       <th>NAME</th>
                       <th>EMAIL</th>
-                      <th>IS SELLER</th>
-                      <th>IS ADMIN</th>
+                      <th>ADDRESS</th>
+                      <th>DELIVERY TYPE</th>
+                      <th>ORDER STATUS</th>
+                      <th>IMAGE</th>
                       <th>ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr key={1}>
-                      <td>dsfds</td>
-                      <td>sdfds</td>
-                      <td>sdfds</td>
-                      <td>sdfds</td>
-                      <td>sdfds</td>
-                      <td>
-                        <button type="button" className="small">
-                          Edit
-                        </button>
-                        <button type="button" className="small" o>
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>NAME</th>
-                      <th>EMAIL</th>
-                      <th>IS SELLER</th>
-                      <th>IS ADMIN</th>
-                      <th>ACTIONS</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr key={1}>
-                      <td>dsf</td>
-                      <td>dsfds</td>
-                      <td>dsfds</td>
-                      <td>sdfd</td>
-                      <td>fdsf</td>
-                      <td>
-                        <button type="button" className="small">
-                          Edit
-                        </button>
-                        <button type="button" className="small">
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
+                    {prescriptions.map((prescriptions) => (
+                      <tr key={prescriptions._id}>
+                        <td>{prescriptions.name}</td>
+                        <td>{prescriptions.email}</td>
+                        <td>{prescriptions.address}</td>
+                        <td>
+                          {prescriptions.isdeliver === true &&
+                          prescriptions.isPickup === true
+                            ? 'BOTH'
+                            : prescriptions.isdeliver
+                            ? 'DELIVERY'
+                            : 'PICKUP'}
+                        </td>
+                        <td>{prescriptions.isPickup ? 'YES' : 'NO'}</td>
+                        <td>
+                          <img
+                            className="prescriptions-image"
+                            src={prescriptions.image}
+                            alt="click here to large"
+                            onClick={() =>
+                              imageClickHandler(
+                                prescriptions.name,
+                                prescriptions.image
+                              )
+                            }
+                          ></img>
+                        </td>
+                        <td className="table-input-btn">
+                          <input
+                            type="number"
+                            placeholder="Enter Total Price"
+                            onChange={(e) => setTotalPrice(e.target.value)}
+                          ></input>
+                          <button type="button" className="primary">
+                            Place Order
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -167,6 +189,23 @@ export default function DashboardScreen() {
           </div>
         </>
       )}
+      <Modal
+        visible={modalVisible}
+        width="800"
+        height="700"
+        effect="fadeInUp"
+        onClickAway={closeModal}
+      >
+        <div className="card-body">
+          <div className="row">
+            <h1>Name : {modalHeader}</h1>
+            <button className="close-modal" onClick={closeModal}>
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+          <img className="large" src={modalImage} alt=""></img>
+        </div>
+      </Modal>
     </div>
   );
 }

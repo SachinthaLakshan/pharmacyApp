@@ -3,6 +3,9 @@ import {
   PRESCRIPTION_CREATE_REQUEST,
   PRESCRIPTION_CREATE_RESET,
   PRESCRIPTION_CREATE_SUCCESS,
+  PRESCRIPTION_LIST_FAIL,
+  PRESCRIPTION_LIST_REQUEST,
+  PRESCRIPTION_LIST_SUCCESS,
 } from '../constants/prescriptionConstants';
 
 export const prescriptionCreateReducer = (state = {}, action) => {
@@ -15,6 +18,22 @@ export const prescriptionCreateReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case PRESCRIPTION_CREATE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const prescriptionListReducer = (
+  state = { loading: true, prescriptions: [] },
+  action
+) => {
+  switch (action.type) {
+    case PRESCRIPTION_LIST_REQUEST:
+      return { loading: true };
+    case PRESCRIPTION_LIST_SUCCESS:
+      return { loading: false, prescriptions: action.payload };
+    case PRESCRIPTION_LIST_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

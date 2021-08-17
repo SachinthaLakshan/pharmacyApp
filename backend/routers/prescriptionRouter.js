@@ -28,4 +28,14 @@ prescriptionRouter.post(
   })
 );
 
+prescriptionRouter.get(
+  '/prescriptions',
+  expressAsyncHandler(async (req, res) => {
+    const prescriptions = await Prescription.find().populate(
+      'prescription._id'
+    );
+    res.send(prescriptions);
+  })
+);
+
 export default prescriptionRouter;
