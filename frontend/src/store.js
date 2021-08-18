@@ -14,6 +14,7 @@ import {
 import {
   prescriptionCreateReducer,
   prescriptionListReducer,
+  prescriptionOrderDeliverReducer,
 } from './reducers/prescriptionReducers';
 import {
   productListReducer,
@@ -76,6 +77,7 @@ const reducer = combineReducers({
   orderSummary: orderSummaryReducer,
   prescriptionCreate: prescriptionCreateReducer,
   prescriptionlist: prescriptionListReducer,
+  prescriptionDeliver: prescriptionOrderDeliverReducer,
 });
 
 // const enhancers = compose(

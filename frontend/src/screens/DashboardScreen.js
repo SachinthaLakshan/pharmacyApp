@@ -4,8 +4,12 @@ import Chart from 'react-google-charts';
 import { summaryOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LodingBox';
 import MessageBox from '../components/MessageBox';
-import { listPrescriptions } from '../actions/prescriptionAction';
+import {
+  deliverPrescriptionOrder,
+  listPrescriptions,
+} from '../actions/prescriptionAction';
 import Modal from 'react-awesome-modal';
+import { PRESCRIPTION_ORDER_DELIVER_RESET } from '../constants/prescriptionConstants';
 
 export default function DashboardScreen() {
   const orderSummary = useSelector((state) => state.orderSummary);
@@ -16,6 +20,12 @@ export default function DashboardScreen() {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const prescriptionlist = useSelector((state) => state.prescriptionlist);
+  const prescriptionDeliver = useSelector((state) => state.prescriptionDeliver);
+  const {
+    loading: loadingDeliver,
+    error: errorDeliver,
+    success: successDeliver,
+  } = prescriptionDeliver;
   const {
     loading: loadingPrescriptions,
     error: errorPrescriptions,
@@ -23,12 +33,23 @@ export default function DashboardScreen() {
   } = prescriptionlist;
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(listPrescriptions());
-  }, [dispatch]);
+
   useEffect(() => {
     dispatch(summaryOrder());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!loadingDeliver) {
+      dispatch(listPrescriptions());
+    }
+    dispatch({ type: PRESCRIPTION_ORDER_DELIVER_RESET });
+  }, [dispatch, loadingDeliver]);
+
+  const placeOrderHandler = (obj) => {
+    if (window.confirm(`Are you sure to dispatch ${obj.name} 's order?`)) {
+      dispatch(deliverPrescriptionOrder(obj._id, totalPrice));
+    }
+  };
 
   const imageClickHandler = (name, image) => {
     setModalVisible(true);
@@ -44,7 +65,7 @@ export default function DashboardScreen() {
       <div className="row">
         <h1>Dashboard</h1>
       </div>
-      {loading || loadingPrescriptions ? (
+      {loading ? (
         <LoadingBox />
       ) : error || errorPrescriptions ? (
         <MessageBox variant="danger">
@@ -93,62 +114,86 @@ export default function DashboardScreen() {
                   <i className="fa fa-pencil-square-o" /> Uploaded Prescriptions
                 </span>
               </div>
-              <div>
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>NAME</th>
-                      <th>EMAIL</th>
-                      <th>ADDRESS</th>
-                      <th>DELIVERY TYPE</th>
-                      <th>ORDER STATUS</th>
-                      <th>IMAGE</th>
-                      <th>ACTIONS</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {prescriptions.map((prescriptions) => (
-                      <tr key={prescriptions._id}>
-                        <td>{prescriptions.name}</td>
-                        <td>{prescriptions.email}</td>
-                        <td>{prescriptions.address}</td>
-                        <td>
-                          {prescriptions.isdeliver === true &&
-                          prescriptions.isPickup === true
-                            ? 'BOTH'
-                            : prescriptions.isdeliver
-                            ? 'DELIVERY'
-                            : 'PICKUP'}
-                        </td>
-                        <td>{prescriptions.isPickup ? 'YES' : 'NO'}</td>
-                        <td>
-                          <img
-                            className="prescriptions-image"
-                            src={prescriptions.image}
-                            alt="click here to large"
-                            onClick={() =>
-                              imageClickHandler(
-                                prescriptions.name,
-                                prescriptions.image
-                              )
-                            }
-                          ></img>
-                        </td>
-                        <td className="table-input-btn">
-                          <input
-                            type="number"
-                            placeholder="Enter Total Price"
-                            onChange={(e) => setTotalPrice(e.target.value)}
-                          ></input>
-                          <button type="button" className="primary">
-                            Place Order
-                          </button>
-                        </td>
+              {successDeliver ? (
+                <MessageBox variant="success">
+                  Order Dispatched Successfully
+                </MessageBox>
+              ) : (
+                <MessageBox variant="danger">{errorDeliver}</MessageBox>
+              )}
+              {loadingPrescriptions ? (
+                <LoadingBox />
+              ) : (
+                <div>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>NAME</th>
+                        <th>EMAIL</th>
+                        <th>ADDRESS</th>
+                        <th>DELIVERY TYPE</th>
+                        <th>IMAGE</th>
+                        <th>ACTIONS</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {prescriptions.map((prescriptions) => {
+                        if (prescriptions.isDelivered === false) {
+                          return (
+                            <tr key={prescriptions._id}>
+                              <td>{prescriptions.name}</td>
+                              <td>{prescriptions.email}</td>
+                              <td>{prescriptions.address}</td>
+                              <td>
+                                {prescriptions.isdeliver === true &&
+                                prescriptions.isPickup === true
+                                  ? 'BOTH'
+                                  : prescriptions.isdeliver
+                                  ? 'DELIVERY'
+                                  : 'PICKUP'}
+                              </td>
+
+                              <td>
+                                <img
+                                  className="prescriptions-image"
+                                  src={prescriptions.image}
+                                  alt="click here to large"
+                                  onClick={() =>
+                                    imageClickHandler(
+                                      prescriptions.name,
+                                      prescriptions.image
+                                    )
+                                  }
+                                ></img>
+                              </td>
+                              <td className="table-input-btn">
+                                <input
+                                  type="number"
+                                  placeholder="Enter Total Price"
+                                  onChange={(e) =>
+                                    setTotalPrice(e.target.value)
+                                  }
+                                  required
+                                ></input>
+                                <button
+                                  type="button"
+                                  className="primary"
+                                  onClick={() =>
+                                    placeOrderHandler(prescriptions)
+                                  }
+                                >
+                                  Place Order
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        }
+                        return null;
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </li>
           </ul>
           <div>

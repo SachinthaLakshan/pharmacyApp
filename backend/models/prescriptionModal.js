@@ -12,6 +12,8 @@ const prescriptionSchema = new mongoose.Schema(
     message: { type: String, required: true },
     totalPrice: { type: Number, required: false },
     image: { type: String, required: true },
+    isDelivered: { type: Boolean, default: false },
+    deliveredAt: { type: Date },
   },
   {
     timestamps: true,

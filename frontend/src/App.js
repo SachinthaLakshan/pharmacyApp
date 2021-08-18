@@ -32,6 +32,7 @@ import DashboardScreen from './screens/DashboardScreen';
 import SupportScreen from './screens/SupportScreen';
 import ChatBox from './components/ChatBox';
 import { listPrescriptions } from './actions/prescriptionAction';
+import PrescriptionListScreen from './screens/prescriptionListScreen';
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -171,6 +172,9 @@ function App() {
                     <Link to="/orderlist">Orders</Link>
                   </li>
                   <li>
+                    <Link to="/prescriptionlist">Prescriptions</Link>
+                  </li>
+                  <li>
                     <Link to="/userlist">Users</Link>
                   </li>
                   <li>
@@ -277,6 +281,10 @@ function App() {
             component={DashboardScreen}
           ></AdminRoute>
           <AdminRoute path="/support" component={SupportScreen}></AdminRoute>
+          <AdminRoute
+            path="/prescriptionlist"
+            component={PrescriptionListScreen}
+          ></AdminRoute>
           <SellerRoute
             path="/productlist/seller"
             component={ProductListScreen}

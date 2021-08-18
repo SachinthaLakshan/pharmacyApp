@@ -81,12 +81,13 @@ export default function PrescriptionScreen() {
             </div>
             {loading && <LoadingBox></LoadingBox>}
             {error && <MessageBox variant="danger">{error}</MessageBox>}
-            {uploadSuccess && (
-              <MessageBox variant="success">
-                {' '}
-                Prescription Successfully Uploaded
-              </MessageBox>
-            )}
+            {uploadSuccess ||
+              (prescription && (
+                <MessageBox variant="success">
+                  {' '}
+                  Prescription Successfully Uploaded
+                </MessageBox>
+              ))}
             {loadingUpload && <LoadingBox></LoadingBox>}
             {errorUpload && (
               <MessageBox variant="danger">{errorUpload}</MessageBox>

@@ -1,7 +1,7 @@
 import express from 'express';
 import Prescription from '../models/prescriptionModal.js';
 import expressAsyncHandler from 'express-async-handler';
-import { isAuth } from '../utils.js';
+import { isAdmin, isAuth } from '../utils.js';
 
 const prescriptionRouter = express.Router();
 
@@ -35,6 +35,28 @@ prescriptionRouter.get(
       'prescription._id'
     );
     res.send(prescriptions);
+  })
+);
+
+prescriptionRouter.put(
+  '/prescriptions/:id/:price/deliver',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const prescription = await Prescription.findById(req.params.id);
+    if (prescription) {
+      prescription.totalPrice = req.params.price;
+      prescription.isDelivered = true;
+      prescription.deliveredAt = Date.now();
+
+      const updatedPrescription = await prescription.save();
+      res.send({
+        message: 'Order Delivered',
+        prescription: updatedPrescription,
+      });
+    } else {
+      res.status(404).send({ message: 'prescription Not Found' });
+    }
   })
 );
 
