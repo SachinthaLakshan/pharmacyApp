@@ -59,6 +59,18 @@ function App() {
     dispatch(listProductCategories());
   }, [dispatch]);
 
+  const dashboardCountPikker = () => {
+    var newArr = [];
+    if (!loading) {
+      prescriptions
+        .filter((person) => person.isDelivered === false)
+        .map((filteredPerson) => {
+          return newArr.push(filteredPerson);
+        });
+    }
+    return newArr;
+  };
+
   return (
     <BrowserRouter>
       <div className="grid-container">
@@ -103,7 +115,7 @@ function App() {
                 ></i>{' '}
                 Prescriptions
                 {!loading && prescriptions.length > 0 && (
-                  <span className="badge">{prescriptions.length}</span>
+                  <span className="badge">{dashboardCountPikker().length}</span>
                 )}
               </Link>
             )}
