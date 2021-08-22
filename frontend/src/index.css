@@ -170,6 +170,11 @@ img.prescriptions-image {
 img.prescriptions-image:hover {
   border: 0.1rem #0a0a09 solid;
 }
+img.large-modal {
+  width: 775px;
+  height: 500px;
+  text-align: center;
+}
 
 /* Card */
 .card {

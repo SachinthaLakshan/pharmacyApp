@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteOrder, listOrders } from '../actions/orderActions';
+import EmailSender from '../components/EmailSender';
 import LoadingBox from '../components/LodingBox';
 import MessageBox from '../components/MessageBox';
 import { ORDER_DELETE_RESET } from '../constants/orderConstants';
@@ -26,6 +27,19 @@ export default function OrderListScreen(props) {
     if (window.confirm('Are you sure to delete?')) {
       dispatch(deleteOrder(order._id));
     }
+  };
+
+  const clickHandler = () => {
+    var templateParams = {
+      name: 'James',
+      totalPrice: 1500.0,
+      description: 'order description222  newwwwww',
+      deliveryType: 'Pick Up',
+    };
+    console.log(
+      '>>>>>>>',
+      EmailSender.sendEmail('template_gf1socq', templateParams)
+    );
   };
   return (
     <div>
@@ -85,6 +99,7 @@ export default function OrderListScreen(props) {
           </tbody>
         </table>
       )}
+      <button onClick={clickHandler}>send</button>
     </div>
   );
 }

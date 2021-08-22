@@ -60,4 +60,24 @@ prescriptionRouter.put(
   })
 );
 
+prescriptionRouter.put(
+  '/prescriptions/:id/dispatch',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const prescription = await Prescription.findById(req.params.id);
+    if (prescription) {
+      prescription.isDispatched = true;
+
+      const updatedPrescription = await prescription.save();
+      res.send({
+        message: 'Order Dispatched',
+        prescription: updatedPrescription,
+      });
+    } else {
+      res.status(404).send({ message: 'prescription Not Found' });
+    }
+  })
+);
+
 export default prescriptionRouter;

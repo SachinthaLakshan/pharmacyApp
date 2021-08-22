@@ -9,6 +9,9 @@ import {
   PRESCRIPTION_ORDER_DELIVER_FAIL,
   PRESCRIPTION_ORDER_DELIVER_REQUEST,
   PRESCRIPTION_ORDER_DELIVER_SUCCESS,
+  PRESCRIPTION_ORDER_DISPATCH_FAIL,
+  PRESCRIPTION_ORDER_DISPATCH_REQUEST,
+  PRESCRIPTION_ORDER_DISPATCH_SUCCESS,
 } from '../constants/prescriptionConstants';
 
 export const createPrescription =
@@ -67,5 +70,29 @@ export const deliverPrescriptionOrder =
           ? error.response.data.message
           : error.message;
       dispatch({ type: PRESCRIPTION_ORDER_DELIVER_FAIL, payload: message });
+    }
+  };
+
+export const dispatchPrescriptionOrder =
+  (orderId) => async (dispatch, getState) => {
+    dispatch({ type: PRESCRIPTION_ORDER_DISPATCH_REQUEST, payload: orderId });
+    const {
+      userSignin: { userInfo },
+    } = getState();
+    try {
+      const { data } = Axios.put(
+        `/api/prescriptions/prescriptions/${orderId}/dispatch`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: PRESCRIPTION_ORDER_DISPATCH_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: PRESCRIPTION_ORDER_DISPATCH_FAIL, payload: message });
     }
   };

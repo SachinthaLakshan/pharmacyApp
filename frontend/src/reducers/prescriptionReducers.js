@@ -10,6 +10,10 @@ import {
   PRESCRIPTION_ORDER_DELIVER_REQUEST,
   PRESCRIPTION_ORDER_DELIVER_RESET,
   PRESCRIPTION_ORDER_DELIVER_SUCCESS,
+  PRESCRIPTION_ORDER_DISPATCH_FAIL,
+  PRESCRIPTION_ORDER_DISPATCH_REQUEST,
+  PRESCRIPTION_ORDER_DISPATCH_RESET,
+  PRESCRIPTION_ORDER_DISPATCH_SUCCESS,
 } from '../constants/prescriptionConstants';
 
 export const prescriptionCreateReducer = (state = {}, action) => {
@@ -52,6 +56,21 @@ export const prescriptionOrderDeliverReducer = (state = {}, action) => {
     case PRESCRIPTION_ORDER_DELIVER_FAIL:
       return { loading: false, error: action.payload };
     case PRESCRIPTION_ORDER_DELIVER_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const prescriptionOrderDispatchReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRESCRIPTION_ORDER_DISPATCH_REQUEST:
+      return { loading: true };
+    case PRESCRIPTION_ORDER_DISPATCH_SUCCESS:
+      return { loading: false, success: true };
+    case PRESCRIPTION_ORDER_DISPATCH_FAIL:
+      return { loading: false, error: action.payload };
+    case PRESCRIPTION_ORDER_DISPATCH_RESET:
       return {};
     default:
       return state;

@@ -10,14 +10,18 @@ import {
 } from '../actions/prescriptionAction';
 import Modal from 'react-awesome-modal';
 import { PRESCRIPTION_ORDER_DELIVER_RESET } from '../constants/prescriptionConstants';
+import EmailSender from '../components/EmailSender';
 
 export default function DashboardScreen() {
   const orderSummary = useSelector((state) => state.orderSummary);
   const { loading, summary, error } = orderSummary;
   const [modalVisible, setModalVisible] = useState(false);
+  const [placeOrderModalVisible, setPlaceOrderModalVisible] = useState(false);
   const [modalHeader, setModalHeader] = useState('not came');
   const [modalImage, setModalImage] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
+  const [orderSummaryText, setOrderSummaryText] = useState('');
+  const [tempObj, setTempObj] = useState({});
 
   const prescriptionlist = useSelector((state) => state.prescriptionlist);
   const prescriptionDeliver = useSelector((state) => state.prescriptionDeliver);
@@ -49,6 +53,20 @@ export default function DashboardScreen() {
     if (window.confirm(`Are you sure to dispatch ${obj.name} 's order?`)) {
       dispatch(deliverPrescriptionOrder(obj._id, totalPrice));
     }
+    setPlaceOrderModalVisible(true);
+    setTempObj(obj);
+  };
+  const sendEmailHandler = () => {
+    var templateParams = {
+      email: tempObj.email,
+      name: tempObj.name,
+      totalPrice: tempObj.totalPrice,
+      description: orderSummaryText,
+      deliveryType: tempObj.isPickup ? 'Pick up' : 'Delivery',
+    };
+
+    EmailSender.sendEmail('template_gf1socq', templateParams);
+    setPlaceOrderModalVisible(false);
   };
 
   const imageClickHandler = (name, image) => {
@@ -59,6 +77,7 @@ export default function DashboardScreen() {
 
   const closeModal = () => {
     setModalVisible(false);
+    setPlaceOrderModalVisible(false);
   };
   return (
     <div>
@@ -248,7 +267,37 @@ export default function DashboardScreen() {
               <i class="fa fa-times" aria-hidden="true"></i>
             </button>
           </div>
-          <img className="large" src={modalImage} alt=""></img>
+          <img className="large-modal" src={modalImage} alt=""></img>
+        </div>
+      </Modal>
+      <Modal
+        visible={placeOrderModalVisible}
+        width="800"
+        height="550"
+        effect="fadeInUp"
+        onClickAway={closeModal}
+      >
+        <div className="card-body">
+          <div className="form">
+            <div>
+              <label htmlFor="address">Order summary</label>
+              <textarea
+                id="address"
+                rows="10"
+                type="text"
+                placeholder="Enter Your Delivery Address"
+                value={orderSummaryText}
+                onChange={(e) => setOrderSummaryText(e.target.value)}
+              ></textarea>
+            </div>
+            <button
+              type="button"
+              className="primary"
+              onClick={sendEmailHandler}
+            >
+              Send Email
+            </button>
+          </div>
         </div>
       </Modal>
     </div>

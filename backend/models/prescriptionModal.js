@@ -13,6 +13,7 @@ const prescriptionSchema = new mongoose.Schema(
     totalPrice: { type: Number, required: false },
     image: { type: String, required: true },
     isDelivered: { type: Boolean, default: false },
+    isDispatched: { type: Boolean, default: false },
     deliveredAt: { type: Date },
   },
   {

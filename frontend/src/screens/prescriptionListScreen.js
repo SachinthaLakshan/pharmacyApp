@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import LoadingBox from '../components/LodingBox';
 import MessageBox from '../components/MessageBox';
 import Modal from 'react-awesome-modal';
+import {
+  dispatchPrescriptionOrder,
+  listPrescriptions,
+} from '../actions/prescriptionAction';
+import { PRESCRIPTION_ORDER_DISPATCH_RESET } from '../constants/prescriptionConstants';
+import EmailSender from '../components/EmailSender';
 
 export default function PrescriptionListScreen() {
+  const prescriptionDispatch = useSelector(
+    (state) => state.prescriptionDispatch
+  );
+  const { loading: loadingDispatch, error: errorDispatch } =
+    prescriptionDispatch;
   const prescriptionlist = useSelector((state) => state.prescriptionlist);
   const { loading, error, prescriptions } = prescriptionlist;
   const [modalVisible, setModalVisible] = useState(false);
   const [modalHeader, setModalHeader] = useState('not came');
   const [modalImage, setModalImage] = useState('');
+  const dispatch = useDispatch();
 
-  const sendReminderHandlear = () => {};
+  useEffect(() => {
+    if (!loadingDispatch) {
+      dispatch(listPrescriptions());
+    }
+    dispatch({ type: PRESCRIPTION_ORDER_DISPATCH_RESET });
+  }, [dispatch, loadingDispatch]);
+
+  const orderDispatchHandlear = (obj) => {
+    if (window.confirm(`Are you sure to dispatch ${obj.name} 's order?`)) {
+      dispatch(dispatchPrescriptionOrder(obj._id));
+    }
+  };
+  const sendReminderHandlear = (obj) => {
+    var templateParams = {
+      email: obj.email,
+      name: obj.name,
+    };
+
+    EmailSender.sendEmail('template_v456crk', templateParams);
+  };
   const imageClickHandler = (name, image) => {
     setModalVisible(true);
     setModalHeader(name);
@@ -24,10 +55,10 @@ export default function PrescriptionListScreen() {
   return (
     <div>
       <h1>Dispatched Prescription orders</h1>
-      {loading ? (
+      {loading || loadingDispatch ? (
         <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
+      ) : error || errorDispatch ? (
+        <MessageBox variant="danger">{error || errorDispatch}</MessageBox>
       ) : (
         <div>
           <table className="table">
@@ -58,8 +89,14 @@ export default function PrescriptionListScreen() {
                           ? 'DELIVERY'
                           : 'PICKUP'}
                       </td>
-                      <td className="alert-success">
-                        {prescriptions.isDelivered ? (
+                      <td
+                        className={
+                          prescriptions.isDispatched
+                            ? 'alert-success'
+                            : 'alert-danger'
+                        }
+                      >
+                        {prescriptions.isDispatched ? (
                           <>
                             Delivered
                             <br />
@@ -83,14 +120,24 @@ export default function PrescriptionListScreen() {
                         ></img>
                       </td>
                       <td className="table-input-btn">
-                        <button
-                          type="button"
-                          className="primary"
-                          onClick={sendReminderHandlear}
-                        >
-                          Send Reminder{' '}
-                          <i class="fa fa-bell-o" aria-hidden="true"></i>
-                        </button>
+                        {!prescriptions.isDispatched ? (
+                          <button
+                            type="button"
+                            className="primary"
+                            onClick={() => orderDispatchHandlear(prescriptions)}
+                          >
+                            Dispatch
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="primary"
+                            onClick={() => sendReminderHandlear(prescriptions)}
+                          >
+                            Send Reminder{' '}
+                            <i class="fa fa-bell-o" aria-hidden="true"></i>
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );
@@ -113,7 +160,7 @@ export default function PrescriptionListScreen() {
                   <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
               </div>
-              <img className="large" src={modalImage} alt=""></img>
+              <img className="large-modal" src={modalImage} alt=""></img>
             </div>
           </Modal>
         </div>
