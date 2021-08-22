@@ -9,6 +9,7 @@ import orderRouter from './routers/orderRouter.js';
 import path from 'path';
 import uploadRouter from './routers/uploadRouter.js';
 import prescriptionRouter from './routers/prescriptionRouter.js';
+import patientRouter from './routers/patientRouter.js';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/onlineosu', {
   useCreateIndex: true,
 });
 
+app.use('/api/patients', patientRouter);
 app.use('/api/prescriptions', prescriptionRouter);
 app.use('/api/uploads', uploadRouter);
 app.use('/api/users', userRouter);

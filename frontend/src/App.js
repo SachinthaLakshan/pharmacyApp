@@ -33,6 +33,7 @@ import SupportScreen from './screens/SupportScreen';
 import ChatBox from './components/ChatBox';
 import { listPrescriptions } from './actions/prescriptionAction';
 import PrescriptionListScreen from './screens/prescriptionListScreen';
+import DoctorScreen from './screens/DoctorScreen';
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -97,14 +98,21 @@ function App() {
           </div>
           <div>
             {userInfo && !userInfo.isAdmin && (
-              <Link to="/prescription">
-                {' '}
-                <i
-                  className="fa fa-pencil-square-o"
-                  aria-hidden="true"
-                ></i>{' '}
-                Upload Prescription
-              </Link>
+              <>
+                <Link to="/prescription">
+                  {' '}
+                  <i
+                    className="fa fa-pencil-square-o"
+                    aria-hidden="true"
+                  ></i>{' '}
+                  Upload Prescription
+                </Link>
+                <Link to="/doctor">
+                  {' '}
+                  <i className="fa fa-user-md" aria-hidden="true"></i> Meet Your
+                  Doctor
+                </Link>
+              </>
             )}
             {userInfo && userInfo.isAdmin && (
               <Link to="/dashboard">
@@ -114,7 +122,7 @@ function App() {
                   aria-hidden="true"
                 ></i>{' '}
                 Prescriptions
-                {!loading && prescriptions.length > 0 && (
+                {!loading && dashboardCountPikker().length > 0 && (
                   <span className="badge">{dashboardCountPikker().length}</span>
                 )}
               </Link>
@@ -242,6 +250,7 @@ function App() {
           <Route path="/payment" component={PaymentMethodScreen}></Route>
           <Route path="/placeorder" component={PlaceOrderScreen}></Route>
           <Route path="/prescription" component={PrescriptionScreen}></Route>
+          <Route path="/doctor" component={DoctorScreen}></Route>
           <Route path="/order/:id" component={OrderScreen}></Route>
           <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
           <Route

@@ -79,6 +79,14 @@ button {
 button.primary {
   background-color: #f0c040;
 }
+button.doctor {
+  background-color: #f0c040;
+  margin-top: -20;
+  margin-bottom: 13px;
+}
+button.doctor:hover {
+  border: 0.1rem #ffffff solid;
+}
 button.block {
   width: 100%;
 }
@@ -545,4 +553,11 @@ button.close-sidebar {
 }
 .pre-header i {
   margin-left: 1rem;
+}
+.pre-header-doctor {
+  color: white;
+  background-color: #203040;
+  text-align: center;
+  border-radius: 12rem;
+  font-size: x-large;
 }
