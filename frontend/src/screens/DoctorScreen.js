@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingBox from '../components/LodingBox';
 import MessageBox from '../components/MessageBox';
-
+import Modal from 'react-awesome-modal';
 import { createPatient } from '../actions/patientAction';
 import { PATIENT_CREATE_RESET } from '../constants/patientConstants';
+import { PayPalButton } from 'react-paypal-button-v2';
+import Axios from 'axios';
 
 export default function DoctorScreen(props) {
   const [name, setName] = useState('');
+  const [sdkReady, setSdkReady] = useState(false);
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [timeSlot, setTimeSlot] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
   const patientCreate = useSelector((state) => state.patientCreate);
   const dispatch = useDispatch();
   const { loading, error, patient } = patientCreate;
@@ -28,11 +32,32 @@ export default function DoctorScreen(props) {
         totalPrice: 1000,
       })
     );
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   useEffect(() => {
+    const addPayPalScript = async () => {
+      const { data } = await Axios.get('/api/config/paypal');
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+    };
+    addPayPalScript();
     dispatch({ type: PATIENT_CREATE_RESET });
-  }, [dispatch]);
+  }, [dispatch, sdkReady]);
+
+  const successPaymentHnadler = (paymentResult) => {
+    alert('paid');
+  };
   return (
     <div>
       <div className="card">
@@ -136,6 +161,25 @@ export default function DoctorScreen(props) {
           </form>
         </div>
       </div>
+      <Modal
+        visible={modalVisible}
+        width="800"
+        height="700"
+        effect="fadeInUp"
+        onClickAway={closeModal}
+      >
+        <div className="card-body">
+          <button className="close-modal" onClick={closeModal}>
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+          <div className="paypal-modal">
+            <PayPalButton
+              amount={1000}
+              onSuccess={successPaymentHnadler}
+            ></PayPalButton>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

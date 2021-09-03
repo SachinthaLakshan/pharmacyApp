@@ -566,3 +566,7 @@ button.close-sidebar {
   border-radius: 12rem;
   font-size: x-large;
 }
+.paypal-modal {
+  align-items: center;
+  padding-top: 80px;
+}
